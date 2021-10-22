@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+</head>
+<body>
+    <form onsubmit="githubProfile(event)">
+        <input type="text" id="username" placeholder="Enter username"></input>
+        <button type=submit>Search</button>
+    </form>
+
+    <br/>
+    <img id="image" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" width="200px" height="200px"/>
+    <br/>
+    <textarea id="user" cols="25" rows="1">Demo</textarea>
+
+    <script>
+        function githubProfile(event){
+            event.preventDefault()
+            let username = document.getElementById("username").value 
+            let userinfo = axios.get(`https://api.github.com/users/${username}`)
+
+            userinfo.then(function(res){
+                console.log(res.data)
+                let avatarUrl = res.data.avatar_url;
+                let name = res.data.name || "demo";
+                
+                let imageTag = document.getElementById("image");
+                imageTag.setAttribute("src", avatarUrl);
+                
+                let textTag = document.getElementById("user");
+                textTag.innerHTML = name
+            }).catch(function(err){
+                console.log(err)
+            })
+        }
+    </script>
+</body>
+</html>
